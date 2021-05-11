@@ -12,10 +12,12 @@ import 'search.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'search.dart';
 
-final String url = "http://10.0.2.2:8000/api/cart/";
 
-final String urldel= "http://10.0.2.2:8000/api/cart/";
+final String url = "http://localhost:8000/api/cart/";
+
+final String urldel= "http://localhost:8000/api/cart/";
 
 //final String url2 = "http://10.0.2.2:8000/api/cart/2/edit";
 //final String url3 = "http://10.0.2.2:8000/api/cart/3/edit";
@@ -47,35 +49,7 @@ class Bag extends StatelessWidget {
             subtitle: Text("\$${product.price}",style: TextStyle(fontSize: 15.0),),
 
           ),
-          //sid=selectedCategory.toString();
 
-          /*  ListView.builder(
-               itemCount: bag.adet.length,
-               itemBuilder: (context, index) {
-                 //var item = bag[index];
-                 return Padding(
-                   padding:
-                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-                   child: Card(
-                     elevation: 4.0,
-                     child: ListTile(
-
-                       title: Text(product.name),
-                       trailing: GestureDetector(
-                           child: Icon(
-                             Icons.remove_circle,
-                             color: Colors.red,
-                           ),
-                           /*onTap: () {
-                             setState(() {
-                               bag.remove(product);
-                             });
-                           }*/
-                           ),
-                     ),
-                   ),
-                 );
-               })*/
         ],
       ),
     );
@@ -90,19 +64,23 @@ class Shoppingbag2 extends StatefulWidget {
 
 class _2shopbagState extends State<Shoppingbag2> {
 
-  int quantity= 1;
+  Future<void> _additem(Productcat prod) async {
+    final String durl= urldel + prod.rowId;
+    final url = Uri.parse(durl);
+    setState(() {
+      prod.qty++;
+    });
 
-  Future<void> _additem() async {
-    final url = Uri.parse(urldel);
-    var body = {
-      'call': 'shoppingbag',
-      'qty': 'quantity',
+    final body = {
+    //  'call': 'shoppingbag',
+      'qty': prod.qty,
+
     };
-
     Map<String, String> headers = {"Content-type": "application/json"};
     //String json = '{"title": "shoppingbag", "body": "quantity"}';
     // make PUT request
-    Response response = await put(url, headers: headers, body: body);
+    Response response = await patch(url, headers: headers, body:jsonEncode(body));
+
     // check the status code for the result
     int statusCode = response.statusCode;
     print(statusCode);
@@ -113,9 +91,32 @@ class _2shopbagState extends State<Shoppingbag2> {
     //  "body": "quantity",
     // }
   }
+  Future<void> _removeitem(Productcat prod) async {
+    final String durl= urldel + prod.rowId;
+    final url = Uri.parse(durl);
+
+    setState(() {
+      if(prod.qty>1){
+        prod.qty--;
+      }
+    });
+
+    final body = {
+      //'call': 'shoppingbag',
+      'qty': prod.qty,
+
+    };
+
+    Map<String, String> headers = {"Content-type": "application/json"};
+    // make patch request
+    Response response = await patch(url, headers: headers, body: jsonEncode(body));
+    // check the status code for the result
+    int statusCode = response.statusCode;
+    print(statusCode);
+
+  }
 
   Future<Null> _deletefunc(String a) async {
-    // int i =widget.catid;
     final String durl= urldel + a;
     final url = Uri.parse(durl);
     // make DELETE request
@@ -157,7 +158,8 @@ class _2shopbagState extends State<Shoppingbag2> {
                       children: [
                         SizedBox(
                           width: 100,
-                          child: Text("price: \$" + _Prods[i].price,
+
+                          child: Text("price: \$" + _Prods[i].subtotal,
                             style: TextStyle(fontWeight: FontWeight.bold),),
                         ),
 
@@ -166,21 +168,25 @@ class _2shopbagState extends State<Shoppingbag2> {
                               icon: new Icon(Icons.remove),
                               highlightColor: Colors.green,
                               onPressed: (){
-                               // removeItem();
+                               _removeitem(_Prods[i]);
                               },
                             ),
                           ),
                           new Container(
-                            child: new Text('$quantity',
-                             style: TextStyle(fontSize: ,),)
+                            child: new Text('${_Prods[i].qty}',
+                             style: TextStyle(fontSize: 20 ,),)
                           ),
                           new Container(
                             child: new IconButton(
                               icon: new Icon(Icons.add),
                               highlightColor: Colors.green,
                               onPressed: (){
-                                _additem();
+                                _additem(_Prods[i]);
+                               /* setState(() {
+                                  Prods[i].subtotal = _Prods[i].price * _Prods[i].qty;
+                                });*/
                               },
+
                             ),
                           ),
 
@@ -274,22 +280,6 @@ class _shopbagState extends State<Shoppingbag> {
     print(statusCode);
   }
 
-  Future<Null> delete2func() async {
-    int i =widget.catid;
-    final String durl= urldel + i.toString();
-    final url = Uri.parse(durl);
-    final request = http.Request("DELETE", url);
-    /*request.headers.addAll(<String, String>{
-      "Accept": "application/json",
-      "token": "my token",
-      "jwt" : "my jwt"
-    });
-    request.body = jsonEncode({"id": 4});*/
-    final response = await request.send();
-    if (response.statusCode != 200)
-      return Future.error("error: status code ${response.statusCode}");
-    return await response.stream.bytesToString();
-  }
 
   @override
   void initState() {
@@ -375,6 +365,5 @@ class _shopbagState extends State<Shoppingbag> {
     );
   }
 }
-
 
 List<Productcat> _Prods = [];

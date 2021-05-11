@@ -167,55 +167,7 @@ class _searchState extends State<search> {
                       )),
                 )),
           ),
-          /*
-          new Expanded(
-            child: _searchResult.length != 0 || controller.text.isNotEmpty
-                ? new ListView.builder(
-              itemCount: _searchResult.length,
-              itemBuilder: (context, i) {
-                return new Card(
-                  child: new ListTile(
-                   leading: new Image.network(_searchResult[i].image,), /*new CircleAvatar(backgroundImage: new NetworkImage(
-                     _searchResult[i].image,),),*/
-                    title: new Text(_searchResult[i].name),
-                    subtitle: Row(
-                      children: [
-                        Text("price: ${_searchResult[i].price}TL",
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                        SizedBox(width: 8.0,),
-                        Text(_searchResult[i].model,style: TextStyle(fontWeight: FontWeight.bold),),
-                      ],
-                    ),
-                  ),
-                  margin: const EdgeInsets.all(0.0),
-                );
-              },
-            )
-                : new ListView.builder(
-              itemCount: _prodDetails.length,
-              itemBuilder: (context, index) {
-                return new Card(
-                  child: new ListTile(
-                  leading: new Image.network(_prodDetails[index].image,),
-                    title: new Text(_prodDetails[index].name),
-                    subtitle: Row(
-                      children: [
-                        Text("price: ${_prodDetails[index].price}TL",
-                          style: TextStyle(fontWeight: FontWeight.bold),),
-                        SizedBox(width: 8.0,),
-                        Text(_prodDetails[index].model,style: TextStyle(fontWeight: FontWeight.bold),),
-                      ],
-                    ),
-                  ),
-                  margin: const EdgeInsets.all(0.0),
-                );
-              },
 
-            ),
-          ),*/
-
-          // new Scaffold(
-          // bottomNavigationBar: BottomAppBar(color: Colors.grey[350], child:
 
           Container(
             color: Colors.grey[200],
@@ -290,7 +242,7 @@ List<ProductDetails> _searchResult = [];
 
 List<ProductDetails> _prodDetails = [];
 
-final String url = "http://10.0.2.2:8000/api/product";
+final String url = "http://localhost:8000/api/product";
 class ProductDetails {
   final int id, category_id, price;
   final String name, model, description, image;
@@ -311,17 +263,21 @@ class ProductDetails {
 }
 class Productcat {
   //final int id, price;
-  final String name, id, price, rowId;
+  final String name, id, price, rowId,subtotal;
+   int qty;
 
-  Productcat({this.id, this.name, this.price, this.rowId});
+  Productcat({this.id, this.name, this.price, this.rowId,this.qty,this.subtotal});
 
   factory Productcat.fromJson(Map<String, dynamic> json) {
     return new Productcat(
       id: json['id'].toString(),
       name: json['name'],
+      qty: json['qty'],
+      subtotal: json['subtotal'].toString(),
       price: json['price'].toString(),
       rowId: json['rowId'],
     );
   }
 }
+
 
