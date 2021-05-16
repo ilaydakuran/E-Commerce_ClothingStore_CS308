@@ -140,13 +140,15 @@ class _searchState extends State<search> {
                 ),
                 itemBuilder: (context, index) => ItemCard(
                   product: _searchResult[index],
-                  press: () => Navigator.push(
+                  press: ()=> Navigator.of(context).push(MaterialPageRoute(builder:(context)=>productScreen( _searchResult[index]))),
+
+                  /* => Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => productScreen(
                           product: _searchResult[index],
                         ),
-                      )),
+                      )),*/
                 ))
                 : new GridView.builder(
                 itemCount: _prodDetails.length,
@@ -158,13 +160,14 @@ class _searchState extends State<search> {
                 ),
                 itemBuilder: (context, i) => ItemCard(
                   product: _prodDetails[i],
-                  press: () => Navigator.push(
+                  press: ()  => Navigator.of(context).push(MaterialPageRoute(builder:(context)=>productScreen(_prodDetails[i],))),
+                  /*=> Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => productScreen(
                           product: _prodDetails[i],
                         ),
-                      )),
+                      )),*/
                 )),
           ),
 
@@ -242,7 +245,7 @@ List<ProductDetails> _searchResult = [];
 
 List<ProductDetails> _prodDetails = [];
 
-final String url = "http://localhost:8000/api/product";
+final String url = "http://10.0.2.2:8000/api/product";
 class ProductDetails {
   final int id, category_id, price;
   final String name, model, description, image;

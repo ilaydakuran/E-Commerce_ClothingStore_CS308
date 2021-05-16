@@ -18,9 +18,9 @@ class catDisplay extends StatefulWidget {
   @override
   _cdisplayState createState() => _cdisplayState();*/
 }
-final String url = "http://localhost:8000/api/category/1";
-final String url2 = "http://localhost:8000/api/category/2";
-final String url3 = "http://localhost:8000/api/category/3";
+final String url = "http://10.0.2.2:8000/api/category/1";
+final String url2 = "http://10.0.2.2:8000/api/category/2";
+final String url3 = "http://10.0.2.2:8000/api/category/3";
 class _cdisplayState extends State<catDisplay> {
   int id;
   _cdisplayState(this.id);
@@ -118,13 +118,14 @@ class _cdisplayState extends State<catDisplay> {
                 ),
                 itemBuilder: (context, index) => ItemCard(
                   product: _searchresult[index],
-                  press: () => Navigator.push(
+                  press: ()  => Navigator.of(context).push(MaterialPageRoute(builder:(context)=>productScreen( _searchresult[index]))),
+                 /* => Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => productScreen(
                           product: _searchresult[index],
                         ),
-                      )),
+                      )),*/
                 ))
                 : new GridView.builder(
                 itemCount: _finalProds.length,
@@ -136,13 +137,14 @@ class _cdisplayState extends State<catDisplay> {
                 ),
                 itemBuilder: (context, i) => ItemCard(
                   product: _finalProds[i],
-                  press: () => Navigator.push(
+                  press: () => Navigator.of(context).push(MaterialPageRoute(builder:(context)=>productScreen(_finalProds[i]))),
+                  /*=> Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => productScreen(
                           product: _finalProds[i],
                         ),
-                      )),
+                      )),*/
                 )),
           ),
         ],

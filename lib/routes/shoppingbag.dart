@@ -15,9 +15,9 @@ import 'package:http/http.dart' as http;
 import 'search.dart';
 
 
-final String url = "http://localhost:8000/api/cart/";
+final String url = "http://10.0.2.2:8000/api/cart/";
 
-final String urldel= "http://localhost:8000/api/cart/";
+final String urldel= "http://10.0.2.2:8000/api/cart/";
 
 //final String url2 = "http://10.0.2.2:8000/api/cart/2/edit";
 //final String url3 = "http://10.0.2.2:8000/api/cart/3/edit";
