@@ -29,6 +29,38 @@ class _CategoriesState extends State<Categories> {
   List<String> categories = ["Woman", "Man"];
   // By default our first item will be selected
   int selectedIndex = 0;
+  Future<Null> getwProduct() async {
+    final response = await http.get(Uri.parse(urlw));
+    final responseJson = json.decode(response.body);
+    print(response.body);
+    setState(() {
+      for (Map prod in responseJson) {
+        _prodDetails.add(ProductDetails.fromJson(prod));
+        print(ProductDetails.fromJson(prod));
+      }
+    });
+  }
+  Future<Null> getmProduct() async {
+    final response = await http.get(Uri.parse(urlm));
+    final responseJson = json.decode(response.body);
+    print(response.body);
+    setState(() {
+      for (Map prod in responseJson) {
+        _prodDetails.add(ProductDetails.fromJson(prod));
+        print(ProductDetails.fromJson(prod));
+      }
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    _prodDetails.clear();
+    if (selectedIndex==0){
+      getwProduct();
+    }
+    else
+      getmProduct();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -49,6 +81,11 @@ class _CategoriesState extends State<Categories> {
       onTap: () {
         setState(() {
           selectedIndex = index;
+          if (selectedIndex==0){
+            getwProduct();
+          }
+          else
+            getmProduct();
         });
       },
       child: Padding(
@@ -79,8 +116,68 @@ class _CategoriesState extends State<Categories> {
 class _searchState extends State<search> {
 
   TextEditingController controller = new TextEditingController();
-  bool isInitialized = false;
-
+  List<String> categories = ["Woman", "Man"];
+  // By default our first item will be selected
+  int selectedIndex = 0;
+  Future<Null> getwProduct() async {
+    final response = await http.get(Uri.parse(urlw));
+    final responseJson = json.decode(response.body);
+    print(response.body);
+    setState(() {
+      for (Map prod in responseJson) {
+        _prodDetails.add(ProductDetails.fromJson(prod));
+        print(ProductDetails.fromJson(prod));
+      }
+    });
+  }
+  Future<Null> getmProduct() async {
+    final response = await http.get(Uri.parse(urlm));
+    final responseJson = json.decode(response.body);
+    print(response.body);
+    setState(() {
+      for (Map prod in responseJson) {
+        _prodDetails.add(ProductDetails.fromJson(prod));
+        print(ProductDetails.fromJson(prod));
+      }
+    });
+  }
+  Widget buildCategory(int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedIndex = index;
+          _prodDetails.clear();
+          if (selectedIndex==0){
+            getwProduct();
+          }
+          else
+            getmProduct();
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              categories[index],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: selectedIndex == index ? Colors.black87 :  Colors.black54,
+                fontSize: 15.0,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20.0 / 4), //top padding 5
+              height: 2,
+              width: 30,
+              color: selectedIndex == index ? Colors.black : Colors.transparent,
+            )
+          ],
+        ),
+      ),
+    );
+  }
   Future<Null> getProduct() async {
     final response = await http.get(Uri.parse(url));
     final responseJson = json.decode(response.body);
@@ -96,7 +193,8 @@ class _searchState extends State<search> {
   void initState() {
     super.initState();
     _prodDetails.clear();
-    getProduct();
+
+    getwProduct();
   }
 
   @override
@@ -127,7 +225,17 @@ class _searchState extends State<search> {
               },),
             ),
           ),
-          Categories(),
+          Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: SizedBox(
+          height: 25,
+          child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: categories.length,
+          itemBuilder: (context, index) => buildCategory(index),
+          ),
+          ),
+          ),
           new Expanded(
             child: _searchResult.length != 0 || controller.text.isNotEmpty
                 ? new GridView.builder(
@@ -244,7 +352,9 @@ class _searchState extends State<search> {
 List<ProductDetails> _searchResult = [];
 List<ProductDetails> _prodDetails = [];
 
-final String url = "http://localhost:8000/api/product";
+final String url = "http://10.0.2.2:8000/api/product";
+final String urlw = "http://10.0.2.2:8000/api/category/4";
+final String urlm = "http://10.0.2.2:8000/api/category/5";
 class ProductDetails {
   final int id, category_id, price;
   final String name, model, description, image;
