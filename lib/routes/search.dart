@@ -215,9 +215,9 @@ class _searchState extends State<search> {
   Future<void> prof() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isinited= prefs.getBool("initialize10");
+    bool isinited= prefs.getBool("initialize11");
     if(isinited==null){
-      prefs.setBool("initialize10",true);
+      prefs.setBool("initialize11",true);
       Navigator.pushNamed(context, '/welcome');
     }
     else{
@@ -242,10 +242,9 @@ class _searchState extends State<search> {
   }
 }
 List<ProductDetails> _searchResult = [];
-
 List<ProductDetails> _prodDetails = [];
 
-final String url = "http://10.0.2.2:8000/api/product";
+final String url = "http://localhost:8000/api/product";
 class ProductDetails {
   final int id, category_id, price;
   final String name, model, description, image;

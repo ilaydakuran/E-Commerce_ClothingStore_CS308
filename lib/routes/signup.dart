@@ -24,7 +24,7 @@ class _SignUpState extends State<SignUp> {
 
 
   Future<void> signUpUser() async {
-    final url = Uri.parse('http://10.0.2.2:8000/api/register');
+    final url = Uri.parse('http://localhost:8000/api/register');
     var body = {
       'call': 'signup',
       'email': mail,

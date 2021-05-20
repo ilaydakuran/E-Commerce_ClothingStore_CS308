@@ -32,7 +32,8 @@ class _productScreenState extends State<productScreen> {
   double rate= 3.00;
   final _formKey = GlobalKey<FormState>();
 
-  final url= "http://10.0.2.2:8000/api/reviews/";
+  final url= "http://localhost:8000/api/reviews/";
+
 
   Future<Null> getComments() async {
     final url2= url + "${product.id}";
@@ -75,7 +76,7 @@ class _productScreenState extends State<productScreen> {
     getComments();
   }
   Future<void> _addcomment() async {
-    final url = Uri.parse("http://10.0.2.2:8000/api/review");
+    final url = Uri.parse("http://localhost:8000/api/review");
     print(comment);
     print(product.id);
     print(rate);
@@ -126,12 +127,7 @@ class _productScreenState extends State<productScreen> {
 
     //  showAlertDialog('WARNING', jsonMap['error_msg']);
     }
-    /*
-    else {
-      print(response.body.toString());
-      print(response.statusCode);
-      showAlertDialog('WARNING', 'Response was not recognized');
-    }*/
+
   }
 
   Widget _buildcomment(){

@@ -15,13 +15,13 @@ import 'package:http/http.dart' as http;
 import 'search.dart';
 
 
-final String url = "http://10.0.2.2:8000/api/cart/";
-
-final String urldel= "http://10.0.2.2:8000/api/cart/";
+final String url = "http://localhost:8000/api/cart/";
+final String url_total = "http://localhost:8000/api/total";
+final String urldel= "http://localhost:8000/api/cart/";
 
 //final String url2 = "http://10.0.2.2:8000/api/cart/2/edit";
 //final String url3 = "http://10.0.2.2:8000/api/cart/3/edit";
-
+int total;
 class Bag extends StatelessWidget {
   final ProductDetails product;
   final Function delete;
@@ -64,6 +64,8 @@ class Shoppingbag2 extends StatefulWidget {
 
 class _2shopbagState extends State<Shoppingbag2> {
 
+
+
   Future<void> _additem(Productcat prod) async {
     final String durl= urldel + prod.rowId;
     final url = Uri.parse(durl);
@@ -84,14 +86,24 @@ class _2shopbagState extends State<Shoppingbag2> {
     // check the status code for the result
     int statusCode = response.statusCode;
     print(statusCode);
-    // this API passes back the updated item with the id added
-    //String body = response.body;
-   // {
-   //   "title": "shoppingbag",
-    //  "body": "quantity",
-    // }
+
   }
-  Future<void> _removeitem(Productcat prod) async {
+  Future<Null> checkouttotal2() async {
+
+    final response = await http.get(Uri.parse(url_total));
+    Map<String, dynamic> jsonMap = json.decode(response.body);
+
+    setState(() {
+      for (var entry in jsonMap.entries) {
+     //   print(total);
+        print("${entry.key} ==> ${entry.value}");
+        print("ok");
+      }
+    });
+  }
+
+
+Future<void> _removeitem(Productcat prod) async {
     final String durl= urldel + prod.rowId;
     final url = Uri.parse(durl);
 
@@ -208,6 +220,17 @@ class _2shopbagState extends State<Shoppingbag2> {
             )
                 : new Text("-Your basket is empty-", style: TextStyle(fontSize: 25.0,),),
             ),
+            Text('Total amount: ' + "${amountlist}"), //todo
+            OutlinedButton(
+              child: Text(
+                "Checkout",
+                style: TextStyle(color: AppColors.primary, fontSize: 30.0),
+
+              ),
+              onPressed: (){
+                Navigator.pushNamed(context, '/payment');
+              },
+            ),
 
             BottomAppBar(
               color: Colors.white,
@@ -245,7 +268,19 @@ class Shoppingbag extends StatefulWidget {
   _shopbagState createState() => _shopbagState();*/
 }
 
+class amount {
+  int total;
+
+  amount({this.total});
+  factory amount.fromJson(Map<String, dynamic> json) {
+    return new amount(
+    total: json['total'],
+    );
+  }
+}
+List<amount> amountlist = [];
 class _shopbagState extends State<Shoppingbag> {
+
   int catid;
   _shopbagState(this.catid);
   // ProductDetails prod;
@@ -269,6 +304,7 @@ class _shopbagState extends State<Shoppingbag> {
       }
     });
   }
+
   Future<Null> _deletefunc(String a) async {
    // int i =widget.catid;
     final String durl= urldel + a;
@@ -279,13 +315,24 @@ class _shopbagState extends State<Shoppingbag> {
     int statusCode = response.statusCode;
     print(statusCode);
   }
-
+  Future<Null> checkouttotal()  async {
+    final response = await http.get(Uri.parse(url_total));
+    final responseJson = json.decode(response.body);
+    print(response.body);
+    setState(() {
+      for (Map entry in responseJson) {
+        amountlist.add(amount.fromJson(entry));
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     _Prods.clear();
     getproduct();
+    amountlist.clear();
+    checkouttotal();
 
   }
 
@@ -306,7 +353,8 @@ class _shopbagState extends State<Shoppingbag> {
       ),
       body: Column(
         children: [
-          Expanded(child: //_Prods.length != 0
+          Expanded(
+              child: //_Prods.length != 0
         new ListView.builder(
             itemCount: _Prods.length,
             itemBuilder: (context, i) {
@@ -339,11 +387,9 @@ class _shopbagState extends State<Shoppingbag> {
               );
             },
           )
-
           ),
 
-
-
+        SizedBox(height: 10.0,),
           BottomAppBar(
             color: Colors.white,
             child:  Container(
