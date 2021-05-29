@@ -11,13 +11,12 @@ import '../productzoom.dart';
 import 'search.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
 import 'search.dart';
 
 
-final String url = "http://10.0.2.2:8000/api/cart/";
-final String url_total = "http://10.0.2.2:8000/api/total";
-final String urldel= "http://10.0.2.2:8000/api/cart/";
+final String url = "http://localhost:8000/api/cart/";
+final String url_total = "http://localhost:8000/api/total";
+final String urldel= "http://localhost:8000/api/cart/";
 
 //final String url2 = "http://10.0.2.2:8000/api/cart/2/edit";
 //final String url3 = "http://10.0.2.2:8000/api/cart/3/edit";
@@ -56,22 +55,27 @@ class Bag extends StatelessWidget {
   }
 }
 
-class Shoppingbag2 extends StatefulWidget {
-
+class ShopCard extends StatefulWidget {
   @override
-  _2shopbagState createState() => _2shopbagState();
+  _ShopCardState createState() => _ShopCardState();
 }
 
-class _2shopbagState extends State<Shoppingbag2> {
+class _ShopCardState extends State<ShopCard> {
 
-
-
+int totall;
   Future<void> _additem(Productcat prod) async {
+
     final String durl= urldel + prod.rowId;
     final url = Uri.parse(durl);
     setState(() {
       prod.qty++;
+
     });
+    setState(() {
+      totall = int.parse(prod.price)* prod.qty;
+    });
+
+
 
     final body = {
     //  'call': 'shoppingbag',
@@ -86,16 +90,19 @@ class _2shopbagState extends State<Shoppingbag2> {
     // check the status code for the result
     int statusCode = response.statusCode;
     print(statusCode);
+   // print(total);
+
 
   }
   Future<Null> checkouttotal2() async {
 
     final response = await http.get(Uri.parse(url_total));
     Map<String, dynamic> jsonMap = json.decode(response.body);
-
+    //await FlutterCheckoutPayment.init(key: );
     setState(() {
       for (var entry in jsonMap.entries) {
      //   print(total);
+
         print("${entry.key} ==> ${entry.value}");
         print("ok");
       }
@@ -180,7 +187,11 @@ Future<void> _removeitem(Productcat prod) async {
                               icon: new Icon(Icons.remove),
                               highlightColor: Colors.green,
                               onPressed: (){
-                               _removeitem(_Prods[i]);
+                                _removeitem(_Prods[i]);
+                                setState(() {
+                                }
+                                );
+
                               },
                             ),
                           ),
@@ -221,6 +232,7 @@ Future<void> _removeitem(Productcat prod) async {
                 : new Text("-Your basket is empty-", style: TextStyle(fontSize: 25.0,),),
             ),
             Text('Total amount: ' + "${amountlist}"), //todo
+
             OutlinedButton(
               child: Text(
                 "Checkout",
@@ -270,7 +282,6 @@ class Shoppingbag extends StatefulWidget {
 
 class amount {
   int total;
-
   amount({this.total});
   factory amount.fromJson(Map<String, dynamic> json) {
     return new amount(
@@ -279,8 +290,9 @@ class amount {
   }
 }
 List<amount> amountlist = [];
-class _shopbagState extends State<Shoppingbag> {
 
+class _shopbagState extends State<Shoppingbag> {
+ // String _isInit = "false";
   int catid;
   _shopbagState(this.catid);
   // ProductDetails prod;
@@ -315,14 +327,16 @@ class _shopbagState extends State<Shoppingbag> {
     int statusCode = response.statusCode;
     print(statusCode);
   }
-  Future<Null> checkouttotal()  async {
+  Future<int> checkouttotal()  async {
     final response = await http.get(Uri.parse(url_total));
     final responseJson = json.decode(response.body);
+
     print(response.body);
     setState(() {
       for (Map entry in responseJson) {
         amountlist.add(amount.fromJson(entry));
       }
+      return amountlist;
     });
   }
 
@@ -335,6 +349,7 @@ class _shopbagState extends State<Shoppingbag> {
     checkouttotal();
 
   }
+
 
   @override
   Widget build(BuildContext context) {
