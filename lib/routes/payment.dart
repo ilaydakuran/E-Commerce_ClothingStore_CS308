@@ -370,6 +370,9 @@ class _paymentState extends State<payment> {
           string.toUpperCase(),
           style: const TextStyle(fontSize: 17.0),
         ),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.purple[600]),
+     ),
       );
     }
     return widget;

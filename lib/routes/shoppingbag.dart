@@ -14,9 +14,9 @@ import 'package:http/http.dart' as http;
 import 'search.dart';
 
 
-final String url = "http://localhost:8000/api/cart/";
-final String url_total = "http://localhost:8000/api/total";
-final String urldel= "http://localhost:8000/api/cart/";
+final String url = "http://10.0.2.2:8000/api/cart/";
+final String url_total = "http://10.0.2.2:8000/api/total";
+final String urldel= "http://10.0.2.2:8000/api/cart/";
 
 //final String url2 = "http://10.0.2.2:8000/api/cart/2/edit";
 //final String url3 = "http://10.0.2.2:8000/api/cart/3/edit";
@@ -62,7 +62,10 @@ class ShopCard extends StatefulWidget {
 
 class _ShopCardState extends State<ShopCard> {
 
-int totall;
+  double total;
+  double subtotal;
+  double realsubtot;
+  int i=0;
   Future<void> _additem(Productcat prod) async {
 
     final String durl= urldel + prod.rowId;
@@ -71,11 +74,12 @@ int totall;
       prod.qty++;
 
     });
+    if(i==0){
+      subtotal = double.parse(prod.price);
+    }
     setState(() {
-      totall = int.parse(prod.price)* prod.qty;
+      prod.price = (subtotal* prod.qty).toString();
     });
-
-
 
     final body = {
     //  'call': 'shoppingbag',
@@ -86,7 +90,9 @@ int totall;
     //String json = '{"title": "shoppingbag", "body": "quantity"}';
     // make PUT request
     Response response = await patch(url, headers: headers, body:jsonEncode(body));
-
+    setState(() {
+      checkouttot();
+    });
     // check the status code for the result
     int statusCode = response.statusCode;
     print(statusCode);
@@ -94,21 +100,28 @@ int totall;
 
 
   }
-  Future<Null> checkouttotal2() async {
 
-    final response = await http.get(Uri.parse(url_total));
-    Map<String, dynamic> jsonMap = json.decode(response.body);
-    //await FlutterCheckoutPayment.init(key: );
-    setState(() {
-      for (var entry in jsonMap.entries) {
-     //   print(total);
+    Future<Null> checkouttot() async {
+      final response = await http.get(Uri.parse(url_total));
+      final responseJson = json.decode(response.body);
+      print(responseJson);
+      //print(entry.value["name"]);
+      setState(() {
+        /*for (var comment in responseJson) {
+            // print(comment["comment"].toString());
+            //_comments.add(comment["comment"].toString());
 
-        print("${entry.key} ==> ${entry.value}");
-        print("ok");
-      }
-    });
+          }*/
+        total=double.parse(responseJson);
+        print(total);
+      });
+    }
+  @override
+  void initState() {
+    super.initState();
+    checkouttot();
+
   }
-
 
 Future<void> _removeitem(Productcat prod) async {
     final String durl= urldel + prod.rowId;
@@ -132,6 +145,9 @@ Future<void> _removeitem(Productcat prod) async {
     // check the status code for the result
     int statusCode = response.statusCode;
     print(statusCode);
+    setState(() {
+      checkouttot();
+    });
 
   }
 
@@ -143,6 +159,9 @@ Future<void> _removeitem(Productcat prod) async {
     // check the status code for the result
     int statusCode = response.statusCode;
     print(statusCode);
+    setState(() {
+      checkouttot();
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -231,7 +250,7 @@ Future<void> _removeitem(Productcat prod) async {
             )
                 : new Text("-Your basket is empty-", style: TextStyle(fontSize: 25.0,),),
             ),
-            Text('Total amount: ' + "${amountlist}"), //todo
+            Text('Total amount: ' + "${total}"), //todo
 
             OutlinedButton(
               child: Text(

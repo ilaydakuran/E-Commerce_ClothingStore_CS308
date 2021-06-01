@@ -32,7 +32,7 @@ class _productScreenState extends State<productScreen> {
   double rate= 3.00;
   final _formKey = GlobalKey<FormState>();
 
-  final url= "http://localhost:8000/api/reviews/";
+  final url= "http://10.0.2.2:8000/api/reviews/";
 
 
   Future<Null> getComments() async {
@@ -68,15 +68,34 @@ class _productScreenState extends State<productScreen> {
       }
     });*/
   }
+  double avgrate;
+  final urlrate= "http://10.0.2.2:8000/api/average/";
+  Future<Null> getrate() async {
+    final url2= urlrate + "${product.id}";
+    print(product.id);
+    final response = await http.get(Uri.parse(url2));
+    final responseJson = json.decode(response.body);
+    print(responseJson);
+    //print(entry.value["name"]);
+    setState(() {
+      /*for (var comment in responseJson) {
+        // print(comment["comment"].toString());
+        //_comments.add(comment["comment"].toString());
 
+      }*/
+      avgrate=double.parse(responseJson);
+      print(avgrate);
+    });
+  }
   @override
   void initState() {
     super.initState();
     _comments.clear();
     getComments();
+    getrate();
   }
   Future<void> _addcomment() async {
-    final url = Uri.parse("http://localhost:8000/api/review");
+    final url = Uri.parse("http://10.0.2.2:8000/api/review");
     print(comment);
     print(product.id);
     print(rate);
@@ -184,6 +203,7 @@ class _productScreenState extends State<productScreen> {
                     children: [
                       Text(product.model,style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)),
                       Text(product.description,style: TextStyle(fontSize: 25.0)),
+
                     ],
                   ),
                 ),
@@ -191,20 +211,46 @@ class _productScreenState extends State<productScreen> {
                 color: AppColors.textColor,
 
               ),
+              /*RatingBar.readOnly(
+                initialRating: avgrate,
+                isHalfAllowed: true,
+                itemSize: 30,
+                halfFilledIcon: Icons.star_half,
+                filledIcon: Icons.star,
+                emptyIcon: Icons.star_border,
+              ),*/
+
+             /* RatingBarIndicator(
+                rating: avgrate,
+                itemBuilder: (context, index) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                itemCount: 5,
+                itemSize: 30.0,
+                direction: Axis.horizontal,
+              ),*/
               RatingBar.builder(
                 initialRating: 3,
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
+                itemSize: 20,
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                 itemBuilder: (context, _) => Icon(
                   Icons.star,
                   color: Colors.amber,
                 ),
+
                 onRatingUpdate: (rating) {
                   print(rating);
+                  setState(() {
+                    rate=rating;
+                  });
+
                 },
+
               ),
               Form(
                 key: _formKey,
