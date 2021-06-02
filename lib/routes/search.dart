@@ -301,8 +301,8 @@ class _searchState extends State<search> {
                     iconSize: 30.0,
                     color: Colors.black87,
                     onPressed: () {
-                      prof();
-                      //Navigator.pushNamed(context, '/profile');
+                      //prof();//profile
+                      Navigator.pushNamed(context, '/welcome');
                     }),
                 IconButton(icon: Icon(Icons.shopping_bag_outlined),
                     iconSize: 30.0,
@@ -323,9 +323,9 @@ class _searchState extends State<search> {
   Future<void> prof() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isinited= prefs.getBool("initialize11");
+    bool isinited= prefs.getBool("initialize13");
     if(isinited==null){
-      prefs.setBool("initialize11",true);
+      prefs.setBool("initialize13",true);
       Navigator.pushNamed(context, '/welcome');
     }
     else{

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cs308_ecommerce/routes/payment.dart';
 import 'package:cs308_ecommerce/routes/search.dart';
 import 'package:cs308_ecommerce/utils/color.dart';
 import 'package:cs308_ecommerce/utils/dimension.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -19,11 +21,11 @@ class _LoginState extends State<Login> {
   String mail;
   String pass;
   final _formKey = GlobalKey<FormState>();
-
+  String accesst;
   Future<void> loginUser() async {
-    final url = Uri.parse('http://localhost:8000/api/login');
+    final url = Uri.parse('http://10.0.2.2:8000/api/login');
     var body = {
-      'call': 'login',
+      //'call': 'login',
       'email': mail,
       'password': pass,
     };
@@ -41,7 +43,7 @@ class _LoginState extends State<Login> {
     if(response.statusCode >= 200 && response.statusCode < 300) {
       //Successful transmission
       Map<String, dynamic> jsonMap = json.decode(response.body);
-
+       print(response.body);
       for(var entry in jsonMap.entries) {
         print("${entry.key} ==> ${entry.value}");
         if (entry.value=="Invalid Credentials"){
@@ -52,7 +54,13 @@ class _LoginState extends State<Login> {
             context,
             MaterialPageRoute(builder: (context) => Login()),
           );
+          print(response.body);
+        }
+        else if(entry.key=="access_token"){
+          SharedPreferences prefs = await SharedPreferences.getInstance();
 
+          prefs.setString('accesstoken', entry.value);
+         // accesst= entry.value;
         }
         print("ok");
       }
@@ -300,6 +308,23 @@ class _LoginState extends State<Login> {
         ),
       ),
     ),
+    );
+  }
+}
+class User {
+  //final int id, price;
+  String name, address, email;
+  final String id;
+
+  User({this.id, this.name, this.address, this.email});
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return new User(
+      id: json['id'].toString(),
+      name: json['name'],
+      address: json['address'],
+      email: json['email'],
+
     );
   }
 }
