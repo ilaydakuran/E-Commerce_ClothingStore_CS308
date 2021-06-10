@@ -283,6 +283,7 @@ class _paymentState extends State<payment> {
   }
   Future<void> checkoutuser(String access) async {
     final url = Uri.parse(urlcheckout);
+    print(access);
     print(_address);
     var body = {
       'address': _address,

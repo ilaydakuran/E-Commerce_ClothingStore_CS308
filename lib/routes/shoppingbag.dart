@@ -82,7 +82,7 @@ class _ShopCardState extends State<ShopCard> {
     });
 
     final body = {
-    //  'call': 'shoppingbag',
+      //  'call': 'shoppingbag',
       'qty': prod.qty,
 
     };
@@ -96,26 +96,26 @@ class _ShopCardState extends State<ShopCard> {
     // check the status code for the result
     int statusCode = response.statusCode;
     print(statusCode);
-   // print(total);
+    // print(total);
 
 
   }
 
-    Future<Null> checkouttot() async {
-      final response = await http.get(Uri.parse(url_total));
-      final responseJson = json.decode(response.body);
-      print(responseJson);
-      //print(entry.value["name"]);
-      setState(() {
-        /*for (var comment in responseJson) {
+  Future<Null> checkouttot() async {
+    final response = await http.get(Uri.parse(url_total));
+    final responseJson = json.decode(response.body);
+    print(responseJson);
+    //print(entry.value["name"]);
+    setState(() {
+      /*for (var comment in responseJson) {
             // print(comment["comment"].toString());
             //_comments.add(comment["comment"].toString());
 
           }*/
-        total=double.parse(responseJson);
-        print(total);
-      });
-    }
+      total=double.parse(responseJson);
+      print(total);
+    });
+  }
   @override
   void initState() {
     super.initState();
@@ -123,7 +123,7 @@ class _ShopCardState extends State<ShopCard> {
 
   }
 
-Future<void> _removeitem(Productcat prod) async {
+  Future<void> _removeitem(Productcat prod) async {
     final String durl= urldel + prod.rowId;
     final url = Uri.parse(durl);
 
@@ -201,36 +201,36 @@ Future<void> _removeitem(Productcat prod) async {
                             style: TextStyle(fontWeight: FontWeight.bold),),
                         ),
 
-                          new Container(
-                            child: new IconButton(
-                              icon: new Icon(Icons.remove),
-                              highlightColor: Colors.green,
-                              onPressed: (){
-                                _removeitem(_Prods[i]);
-                                setState(() {
-                                }
-                                );
+                        new Container(
+                          child: new IconButton(
+                            icon: new Icon(Icons.remove),
+                            highlightColor: Colors.green,
+                            onPressed: (){
+                              _removeitem(_Prods[i]);
+                              setState(() {
+                              }
+                              );
 
-                              },
-                            ),
+                            },
                           ),
-                          new Container(
+                        ),
+                        new Container(
                             child: new Text('${_Prods[i].qty}',
-                             style: TextStyle(fontSize: 20 ,),)
-                          ),
-                          new Container(
-                            child: new IconButton(
-                              icon: new Icon(Icons.add),
-                              highlightColor: Colors.green,
-                              onPressed: (){
-                                _additem(_Prods[i]);
-                               /* setState(() {
+                              style: TextStyle(fontSize: 20 ,),)
+                        ),
+                        new Container(
+                          child: new IconButton(
+                            icon: new Icon(Icons.add),
+                            highlightColor: Colors.green,
+                            onPressed: (){
+                              _additem(_Prods[i]);
+                              /* setState(() {
                                   Prods[i].subtotal = _Prods[i].price * _Prods[i].qty;
                                 });*/
-                              },
+                            },
 
-                            ),
                           ),
+                        ),
 
                         IconButton(
                             icon: Icon(Icons.delete),
@@ -304,14 +304,14 @@ class amount {
   amount({this.total});
   factory amount.fromJson(Map<String, dynamic> json) {
     return new amount(
-    total: json['total'],
+      total: json['total'],
     );
   }
 }
 List<amount> amountlist = [];
 
 class _shopbagState extends State<Shoppingbag> {
- // String _isInit = "false";
+  // String _isInit = "false";
 
   // ProductDetails prod;
   //_shopbagState(this.prod);
@@ -336,7 +336,7 @@ class _shopbagState extends State<Shoppingbag> {
   }
 
   Future<Null> _deletefunc(String a) async {
-   // int i =widget.catid;
+    // int i =widget.catid;
     final String durl= urldel + a;
     final url = Uri.parse(durl);
     // make DELETE request
@@ -345,7 +345,7 @@ class _shopbagState extends State<Shoppingbag> {
     int statusCode = response.statusCode;
     print(statusCode);
   }
- /* Future<int> checkouttotal()  async {
+  /* Future<int> checkouttotal()  async {
     final response = await http.get(Uri.parse(url_total));
     final responseJson = json.decode(response.body);
 
@@ -388,41 +388,41 @@ class _shopbagState extends State<Shoppingbag> {
         children: [
           Expanded(
               child: //_Prods.length != 0
-        new ListView.builder(
-            itemCount: _Prods.length,
-            itemBuilder: (context, i) {
-              return new Card(
-                child: new ListTile(
-                  //leading: //new Image.network(_Prods[i].image,), /*new CircleAvatar(backgroundImage: new NetworkImage(
-                  // _searchResult[i].image,),),*/
-                  title: new Text(_Prods[i].name, style: TextStyle(color: Colors.black),),
-                  subtitle: Row(
-                    children: [
-                      SizedBox(
-                        width: 300,
-                        child: Text("price: \$" + _Prods[i].price,
-                           style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
+              new ListView.builder(
+                itemCount: _Prods.length,
+                itemBuilder: (context, i) {
+                  return new Card(
+                    child: new ListTile(
+                      //leading: //new Image.network(_Prods[i].image,), /*new CircleAvatar(backgroundImage: new NetworkImage(
+                      // _searchResult[i].image,),),*/
+                      title: new Text(_Prods[i].name, style: TextStyle(color: Colors.black),),
+                      subtitle: Row(
+                        children: [
+                          SizedBox(
+                            width: 300,
+                            child: Text("price: \$" + _Prods[i].price,
+                              style: TextStyle(fontWeight: FontWeight.bold),),
+                          ),
 
-                      IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: (){
-                            _deletefunc(_Prods[i].rowId);
-                            setState(() {
-                              _Prods.removeWhere((item) => item.rowId == _Prods[i].rowId);
-                            });
-                          }),
-                      //Text(_Prods[i].model,style: TextStyle(fontWeight: FontWeight.bold),),
-                    ],
-                  ),
-                ),
-                margin: const EdgeInsets.all(0.0),
-              );
-            },
-          )
+                          IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: (){
+                                _deletefunc(_Prods[i].rowId);
+                                setState(() {
+                                  _Prods.removeWhere((item) => item.rowId == _Prods[i].rowId);
+                                });
+                              }),
+                          //Text(_Prods[i].model,style: TextStyle(fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                    ),
+                    margin: const EdgeInsets.all(0.0),
+                  );
+                },
+              )
           ),
 
-        SizedBox(height: 10.0,),
+          SizedBox(height: 10.0,),
           BottomAppBar(
             color: Colors.white,
             child:  Container(

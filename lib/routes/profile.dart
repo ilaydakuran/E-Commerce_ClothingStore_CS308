@@ -110,13 +110,13 @@ class _profileState extends State<Profile> {
     final response = await http.get(
       Uri.http(url.authority, url.path),
       headers:{HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $access"},
-     /* headers: <String, String>{
+      /* headers: <String, String>{
         "Accept": "application/json",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         'Authorization': 'Bearer $access',
       },*/
       //body: body,
-     // encoding: Encoding.getByName("utf-8"),
+      // encoding: Encoding.getByName("utf-8"),
     );
     print(response.statusCode);
     print(response.body);
@@ -126,9 +126,9 @@ class _profileState extends State<Profile> {
       for (var entry in jsonMap)
       {
         for (var entry2 in entry) {
-        print("${entry2}");
-        print("ok");
-      }
+          print("${entry2}");
+          print("ok");
+        }
       }
     }
   }
@@ -231,5 +231,3 @@ class _profileState extends State<Profile> {
 
 
 }
-
-
