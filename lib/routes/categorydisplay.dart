@@ -18,9 +18,9 @@ class catDisplay extends StatefulWidget {
   @override
   _cdisplayState createState() => _cdisplayState();*/
 }
-final String url = "http://localhost/api/category/1";
-final String url2 = "http://localhost:8000/api/category/2";
-final String url3 = "http://localhost:8000/api/category/3";
+final String url = "http://10.0.2.2:8000/api/category/1";
+final String url2 = "http://10.0.2.2:8000/api/category/2";
+final String url3 = "http://10.0.2.2:8000/api/category/3";
 class _cdisplayState extends State<catDisplay> {
   int id;
   _cdisplayState(this.id);
@@ -71,9 +71,9 @@ class _cdisplayState extends State<catDisplay> {
   }
   Widget categoryapp(){
 
-    if(widget.id==1){return Row(children: [SizedBox(width:100,),new Text('T-shirt')]);}
-    else if(widget.id==2){return Row(children: [SizedBox(width:100,),new Text('Shoes')]);}
-    else if(widget.id==3){return Row(children: [SizedBox(width:100,),new Text('Trousers')]);}
+    if(widget.id==1){return Row(children: [SizedBox(width:100,),new Text('Tops')]);}
+    else if(widget.id==2){return Row(children: [SizedBox(width:100,),new Text('Bottoms')]);}
+    else if(widget.id==3){return Row(children: [SizedBox(width:100,),new Text('Accessory')]);}
 
   }
   String a;

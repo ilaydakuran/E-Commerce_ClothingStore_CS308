@@ -291,12 +291,12 @@ class Shoppingbag extends StatefulWidget {
   //Shoppingbag(this.prod);
   int catid;
   Shoppingbag(this.catid);
-  State<StatefulWidget> createState() {
+  /*State<StatefulWidget> createState() {
     return _shopbagState(this.catid);
     // return _shopbagState(this.prod);
-  }
-/*@override
-  _shopbagState createState() => _shopbagState();*/
+  }*/
+  @override
+  _shopbagState createState() => _shopbagState();
 }
 
 class amount {
@@ -312,8 +312,7 @@ List<amount> amountlist = [];
 
 class _shopbagState extends State<Shoppingbag> {
  // String _isInit = "false";
-  int catid;
-  _shopbagState(this.catid);
+
   // ProductDetails prod;
   //_shopbagState(this.prod);
   //TextEditingController controller = new TextEditingController();
@@ -346,7 +345,7 @@ class _shopbagState extends State<Shoppingbag> {
     int statusCode = response.statusCode;
     print(statusCode);
   }
-  Future<int> checkouttotal()  async {
+ /* Future<int> checkouttotal()  async {
     final response = await http.get(Uri.parse(url_total));
     final responseJson = json.decode(response.body);
 
@@ -357,7 +356,7 @@ class _shopbagState extends State<Shoppingbag> {
       }
       return amountlist;
     });
-  }
+  }*/
 
   @override
   void initState() {
@@ -365,7 +364,7 @@ class _shopbagState extends State<Shoppingbag> {
     _Prods.clear();
     getproduct();
     amountlist.clear();
-    checkouttotal();
+    //checkouttotal();
 
   }
 

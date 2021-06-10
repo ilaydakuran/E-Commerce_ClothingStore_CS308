@@ -58,7 +58,7 @@ class catcard extends StatelessWidget {
 
   String categoryname;
   Future<void> category() async {
-    final url = Uri.parse('http://localhost:8000/api/category');
+    final url = Uri.parse('http://10.0.2.2:8000/api/category');
     var body = {
       'call': 'catagories',
       // 'categoryname': categoryname,
@@ -174,9 +174,9 @@ class catcard extends StatelessWidget {
   }
 }
 List<catagory> cats = [
-  catagory(name: "T-shirts", imageUrl: "assets/tshirt.jpg", categid: 1),
-  catagory(name: "Throusers", imageUrl: "assets/pants.jpg", categid: 3),
-  catagory(name: "Shoes", imageUrl: "assets/shoes2.jpg", categid: 2),
+  catagory(name: "Tops", imageUrl: "assets/tshirt.jpg", categid: 1),
+  catagory(name: "Accessory", imageUrl: "assets/pants.jpg", categid: 3),
+  catagory(name: "Bottoms", imageUrl: "assets/shoes2.jpg", categid: 2),
 
 ];
 class catsearch extends StatefulWidget {

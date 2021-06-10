@@ -302,7 +302,7 @@ class _searchState extends State<search> {
                     color: Colors.black87,
                     onPressed: () {
                       //prof();//profile
-                      Navigator.pushNamed(context, '/welcome');
+                      Navigator.pushNamed(context, '/profile');
                     }),
                 IconButton(icon: Icon(Icons.shopping_bag_outlined),
                     iconSize: 30.0,
@@ -356,10 +356,10 @@ final String url = "http://10.0.2.2:8000/api/product";
 final String urlw = "http://10.0.2.2:8000/api/category/4";
 final String urlm = "http://10.0.2.2:8000/api/category/5";
 class ProductDetails {
-  final int id, category_id, price;
+  final int id, category_id, price, quantity_in_stocks;
   final String name, model, description, image;
 
-  ProductDetails({this.id, this.name, this.model, this.description, this.image, this.price, this.category_id});
+  ProductDetails({this.id, this.name, this.model, this.description, this.image, this.price, this.category_id, this.quantity_in_stocks});
 
   factory ProductDetails.fromJson(Map<String, dynamic> json) {
     return new ProductDetails(
@@ -370,6 +370,7 @@ class ProductDetails {
       image: json['image'],
       price: json['price'],
       category_id: json['category_id'],
+      quantity_in_stocks: json['quantity_in_stocks'],
     );
   }
 }

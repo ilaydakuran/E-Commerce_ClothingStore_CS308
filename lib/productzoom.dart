@@ -74,18 +74,30 @@ class _productScreenState extends State<productScreen> {
     final url2= urlrate + "${product.id}";
     print(product.id);
     final response = await http.get(Uri.parse(url2));
-    final responseJson = json.decode(response.body);
-    print(responseJson);
-    //print(entry.value["name"]);
     setState(() {
+      avgrate = json.decode(response.body);
+    });
+    /*Map<String, dynamic> jsonMap = json.decode(response.body);
+    print(response.body);
+    for(var entry in jsonMap.entries) {
+      setState(() {
+        //avgrate=double.parse(entry.value);
+        avgrate=entry.value;
+      });
+    }*/
+   // final responseJson = json.decode(response.body);
+    //print(responseJson);
+    //print(entry.value["name"]);
+    //setState(() {
       /*for (var comment in responseJson) {
         // print(comment["comment"].toString());
         //_comments.add(comment["comment"].toString());
 
       }*/
-      avgrate=double.parse(responseJson);
+      //avgrate=double.parse(responseJson);
+      print("avg ratiiiiiiing");
       print(avgrate);
-    });
+    //});
   }
   @override
   void initState() {
@@ -192,6 +204,7 @@ class _productScreenState extends State<productScreen> {
                     child: Container(width: 200, height: 200, child: Image.network(product.image)),
 
                   ),
+                  Center(child: Text("Quantity in stocks: " + "${product.quantity_in_stocks}",style: TextStyle(fontSize: 18.0))),
                 ],
               ),
               ),
@@ -203,7 +216,7 @@ class _productScreenState extends State<productScreen> {
                     children: [
                       Text(product.model,style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)),
                       Text(product.description,style: TextStyle(fontSize: 25.0)),
-
+                      Text("Average rate: "+ "${avgrate}"),
                     ],
                   ),
                 ),
@@ -219,8 +232,8 @@ class _productScreenState extends State<productScreen> {
                 filledIcon: Icons.star,
                 emptyIcon: Icons.star_border,
               ),*/
-
-             /* RatingBarIndicator(
+             avgrate!=null ?
+               RatingBarIndicator(
                 rating: avgrate,
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
@@ -229,8 +242,8 @@ class _productScreenState extends State<productScreen> {
                 itemCount: 5,
                 itemSize: 30.0,
                 direction: Axis.horizontal,
-              ),*/
-              RatingBar.builder(
+              ): Container(),
+             /* RatingBar.builder(
                 initialRating: 3,
                 minRating: 1,
                 direction: Axis.horizontal,
@@ -251,7 +264,7 @@ class _productScreenState extends State<productScreen> {
 
                 },
 
-              ),
+              ),*/
               Form(
                 key: _formKey,
               child:
@@ -313,8 +326,27 @@ class _productScreenState extends State<productScreen> {
                   ),
                   onPressed: (){
                     //bag.addItem(product.id, product.name, product.price);
+                    if(product.quantity_in_stocks!=0)
+                    {
+                      Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Shoppingbag(product.id)));
 
-                    Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Shoppingbag(product.id)));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('product is succesfully added to your bag'),
+                          action: SnackBarAction(
+                            label: 'Undo',
+                            onPressed: () {
+                              SnackBar();
+                            },
+                          ),
+                        ),
+                      );
+                    }
+                    else{
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text('The product is out of stock')));
+                    }
+                   /* Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Shoppingbag(product.id)));
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -326,7 +358,7 @@ class _productScreenState extends State<productScreen> {
                           },
                         ),
                       ),
-                    );
+                    );*/
                   }
               ),
                 Container(

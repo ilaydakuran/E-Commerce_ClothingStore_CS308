@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
 import 'package:cs308_ecommerce/routes/catagories.dart';
+import 'package:cs308_ecommerce/routes/welcome.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 class profile {
   String name;
 
@@ -66,6 +71,7 @@ List<profile> profiles = [
 
 ];
 
+
 class Profile extends StatefulWidget {
   @override
   _profileState createState() => _profileState();
@@ -76,7 +82,56 @@ class _profileState extends State<Profile> {
   final _formKey = GlobalKey<FormState>();
   final controller = TextEditingController();
   //String name='';
-
+  Future<Null> _getprofile() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String access= prefs.getString('accesstoken');
+    print("denemeeeeeeeeeeeeee");
+    print(access);
+    if(access== null){
+      Navigator.pushNamed(context, '/welcome');
+    }
+    else{
+      Profile();
+    }
+  }
+  void initState() {
+    super.initState();
+    _getprofile();
+    _orders();
+  }
+  Future<void> _orders() async {
+    final url = Uri.parse('http://10.0.2.2:8000/api/order');
+    /* var body = {
+      'call': 'catagories',
+      // 'categoryname': categoryname,
+    };*/
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String access= prefs.getString('accesstoken');
+    final response = await http.get(
+      Uri.http(url.authority, url.path),
+      headers:{HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $access"},
+     /* headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        'Authorization': 'Bearer $access',
+      },*/
+      //body: body,
+     // encoding: Encoding.getByName("utf-8"),
+    );
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      //Successful transmission
+      List<dynamic> jsonMap = json.decode(response.body);
+      for (var entry in jsonMap)
+      {
+        for (var entry2 in entry) {
+        print("${entry2}");
+        print("ok");
+      }
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -162,7 +217,9 @@ class _profileState extends State<Profile> {
                     });
                   },
                 ),
+                Container(
 
+                ),
 
 
 
@@ -174,4 +231,5 @@ class _profileState extends State<Profile> {
 
 
 }
+
 

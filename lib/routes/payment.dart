@@ -286,30 +286,31 @@ class _paymentState extends State<payment> {
     print(_address);
     var body = {
       'address': _address,
-     // 'access_token': 'Bearer $access',
+     //'access_token': 'Bearer $access',
     };
-
+    //var accesst = base64.encode(utf8.encode(access));ci
     final response = await http.post(
       Uri.http(url.authority, url.path),
-      headers: <String, String> {
+      headers:{HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $access"},
+      /* <String, String> {
         "Accept": "application/json",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        'Authorization': 'Bearer $access',
-      },
-      body: body,
+        'Authorization': 'Bearer $accesst',
+      },*/
+      body: jsonEncode(body),
       encoding: Encoding.getByName("utf-8"),
     );
-
+    print("response:" + response.toString());
     if(response.statusCode >= 200 && response.statusCode < 300) {
       //Successful transmission
-      Map<String, dynamic> jsonMap = json.decode(response.body);
+     /* Map<String, dynamic> jsonMap = json.decode(response.body);
 
       for(var entry in jsonMap.entries) {
         print("${entry.key} ==> ${entry.value}");
 
 
         print("ok");
-      }
+      }*/
 
     }
     print(response.statusCode);
