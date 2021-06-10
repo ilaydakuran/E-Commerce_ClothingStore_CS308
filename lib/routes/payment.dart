@@ -22,10 +22,10 @@ String backendUrl = '{YOUR_BACKEND_URL}';
 // Set this to a public key that matches the secret key you supplied while creating the heroku instance
 String paystackPublicKey = '{YOUR_PAYSTACK_PUBLIC_KEY}';
 const String appName = 'Payment';
-final String urlcheckout = "http://10.0.2.2:8000/api/checkout";
+final String urlcheckout = "http://localhost:8000/api/checkout";
 class payment extends StatefulWidget {
- // final String access;
- // const payment({Key key,this.access}) : super(key: key);
+  // final String access;
+  // const payment({Key key,this.access}) : super(key: key);
   @override
   _paymentState createState() => _paymentState();
 }
@@ -70,17 +70,17 @@ class _paymentState extends State<payment> {
             child: new ListBody(
               children: <Widget>[
                 Text('Address Information',style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold)),
-            new TextFormField(
-            decoration: const InputDecoration(
-              focusColor: AppColors.primary,
-                hoverColor: AppColors.primary,
-                fillColor: AppColors.primary,
-                border: const UnderlineInputBorder(),
-            labelText: 'Address',
+                new TextFormField(
+                  decoration: const InputDecoration(
+                    focusColor: AppColors.primary,
+                    hoverColor: AppColors.primary,
+                    fillColor: AppColors.primary,
+                    border: const UnderlineInputBorder(),
+                    labelText: 'Address',
 
-            ),
-            onSaved: (String value) => _address = value,
-            ),
+                  ),
+                  onSaved: (String value) => _address = value,
+                ),
 
                 SizedBox(height: 40.0,),
 
@@ -230,7 +230,7 @@ class _paymentState extends State<payment> {
   }
 
   _handleCheckout(BuildContext context) async {
-   /* if (_method != CheckoutMethod.card && _isLocal) {
+    /* if (_method != CheckoutMethod.card && _isLocal) {
       _showMessage('Select server initialization method at the top');
       return;
     }*/
@@ -275,7 +275,7 @@ class _paymentState extends State<payment> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Purchasing...')));
       // Navigator.pushNamed(context, '/search');
-    /*  Navigator.push(
+      /*  Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => search()),
       );*/
@@ -287,7 +287,7 @@ class _paymentState extends State<payment> {
     print(_address);
     var body = {
       'address': _address,
-     //'access_token': 'Bearer $access',
+      //'access_token': 'Bearer $access',
     };
     //var accesst = base64.encode(utf8.encode(access));ci
     final response = await http.post(
@@ -304,7 +304,7 @@ class _paymentState extends State<payment> {
     print("response:" + response.toString());
     if(response.statusCode >= 200 && response.statusCode < 300) {
       //Successful transmission
-     /* Map<String, dynamic> jsonMap = json.decode(response.body);
+      /* Map<String, dynamic> jsonMap = json.decode(response.body);
 
       for(var entry in jsonMap.entries) {
         print("${entry.key} ==> ${entry.value}");
@@ -430,8 +430,8 @@ class _paymentState extends State<payment> {
           style: const TextStyle(fontSize: 17.0),
         ),
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.purple[600]),
-     ),
+          backgroundColor: MaterialStateProperty.all(Colors.purple[600]),
+        ),
       );
     }
     return widget;
