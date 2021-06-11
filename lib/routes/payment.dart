@@ -22,7 +22,7 @@ String backendUrl = '{YOUR_BACKEND_URL}';
 // Set this to a public key that matches the secret key you supplied while creating the heroku instance
 String paystackPublicKey = '{YOUR_PAYSTACK_PUBLIC_KEY}';
 const String appName = 'Payment';
-final String urlcheckout = "http://localhost:8000/api/checkout";
+final String urlcheckout = "http://10.0.2.2:8000/api/checkout";
 class payment extends StatefulWidget {
   // final String access;
   // const payment({Key key,this.access}) : super(key: key);
@@ -156,11 +156,11 @@ class _paymentState extends State<payment> {
                           : new Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          _getPlatformButton(
+                        /*  _getPlatformButton(
 
-                              'Charge Card', () => _startAfreshCharge()),
-                          _verticalSizeBox,
-                          _border,
+                              'Charge Card', () => _startAfreshCharge()),*/
+                          // _verticalSizeBox,
+                          //_border,
                           new SizedBox(
                             height: 40.0,
                           ),
@@ -206,7 +206,7 @@ class _paymentState extends State<payment> {
                                   width: double.infinity,
                                   child: _getPlatformButton(
                                     'Checkout',
-                                        () => _handleCheckout(context),
+                                        () => _getprofile(),//_handleCheckout(context),
                                   ),
                                 ),
                               ),
@@ -227,6 +227,20 @@ class _paymentState extends State<payment> {
 
   void _handleRadioValueChanged(int value) {
     if (value != null) setState(() => _radioValue = value);
+  }
+  Future<Null> _getprofile() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String access= prefs.getString('accesstoken');
+    print("denemeeeeeeeeeeeeee");
+    print(access);
+    if(access== null){
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('You are not Logged in')));
+      Navigator.pushNamed(context, '/welcome');
+    }
+    else{
+      _handleCheckout(context);
+    }
   }
 
   _handleCheckout(BuildContext context) async {
@@ -272,8 +286,6 @@ class _paymentState extends State<payment> {
       //showAlertDialog("Action", 'Button clicked');
       checkoutuser(access);
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Purchasing...')));
       // Navigator.pushNamed(context, '/search');
       /*  Navigator.push(
         context,
@@ -312,6 +324,8 @@ class _paymentState extends State<payment> {
 
         print("ok");
       }*/
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Purchased...')));
 
     }
     print(response.statusCode);

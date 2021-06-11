@@ -183,7 +183,7 @@ class catsearch extends StatefulWidget {
   @override
   _catsearchState createState() => _catsearchState();
 }
-
+/*
 class Categories extends StatefulWidget {
   @override
   _CategoriesState createState() => _CategoriesState();
@@ -239,7 +239,7 @@ class _CategoriesState extends State<Categories> {
       ),
     );
   }
-}
+}*/
 class _catsearchState extends State<catsearch> {
 
   TextEditingController controller = new TextEditingController();
@@ -282,7 +282,7 @@ class _catsearchState extends State<catsearch> {
       body: new Column(
         children: <Widget>[
 
-          Categories(),
+          //Categories(),
           new Expanded(
             child: new ListView.builder(
               itemCount: cats.length,

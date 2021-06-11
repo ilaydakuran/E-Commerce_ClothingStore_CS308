@@ -216,7 +216,7 @@ class _productScreenState extends State<productScreen> {
                     children: [
                       Text(product.model,style: TextStyle(fontSize: 35.0, fontWeight: FontWeight.bold)),
                       Text(product.description,style: TextStyle(fontSize: 25.0)),
-                      Text("Average rate: "+ "${avgrate}"),
+                      //Text("Average rate: "+ "${avgrate}"),
                     ],
                   ),
                 ),
@@ -333,12 +333,12 @@ class _productScreenState extends State<productScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('product is succesfully added to your bag'),
-                          action: SnackBarAction(
+                         /* action: SnackBarAction(
                             label: 'Undo',
                             onPressed: () {
                               SnackBar();
                             },
-                          ),
+                          ),*/
                         ),
                       );
                     }
