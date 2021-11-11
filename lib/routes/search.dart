@@ -28,7 +28,7 @@ class Categories extends StatefulWidget {
 class _CategoriesState extends State<Categories> {
   List<String> categories = ["Woman", "Man"];
   // By default our first item will be selected
-  int selectedIndex = 0;
+  int selectedIndex = 0; //
   Future<Null> getwProduct() async {
     final response = await http.get(Uri.parse(urlw));
     final responseJson = json.decode(response.body);
