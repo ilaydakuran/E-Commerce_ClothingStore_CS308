@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String accesst;
   Future<void> loginUser() async {
-    final url = Uri.parse('http://10.0.2.2:8000/api/login');
+    final url = Uri.parse('http://localhost:8000/api/login');
     var body = {
       //'call': 'login',
       'email': mail,

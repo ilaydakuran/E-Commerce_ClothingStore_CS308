@@ -105,7 +105,7 @@ class _profileState extends State<Profile> {
   }
   List<pivot> _pivotinf=[];
   Future<void> _orders() async {
-    final url = Uri.parse('http://10.0.2.2:8000/api/order');
+    final url = Uri.parse('http://localhost:8000/api/order');
     /* var body = {
       'call': 'catagories',
       // 'categoryname': categoryname,
@@ -448,95 +448,3 @@ class Productorder {
     );
   }
 }
-/*
-class orders extends StatefulWidget {
-  @override
-  _ordersState createState() => _ordersState();
-}
-
-class _ordersState extends State<orders> {
-  Future<void> _orders() async {
-    final url = Uri.parse('http://10.0.2.2:8000/api/order');
-    /* var body = {
-      'call': 'catagories',
-      // 'categoryname': categoryname,
-    };*/
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String access= prefs.getString('accesstoken');
-    final response = await http.get(
-      Uri.http(url.authority, url.path),
-      headers:{HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $access"},
-      /* headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        'Authorization': 'Bearer $access',
-      },*/
-      //body: body,
-      // encoding: Encoding.getByName("utf-8"),
-    );
-    print(response.statusCode);
-    print(response.body);
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      //Successful transmission
-      List<dynamic> jsonMap = json.decode(response.body);
-      for (var entry in jsonMap)
-      {
-        for (var entry2 in entry) {
-          print("${entry2}");
-          print("ok");
-          setState(() {
-            _orderslist.add(Productorder.fromJson(entry2));
-
-          });
-        }
-      }
-    }
-  }
-  void initState() {
-    super.initState();
-  //  _getprofile();
-    _orders();
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold( appBar: new AppBar(title: const Text("Orders"),backgroundColor: AppColors.primary,),
-        body:  Expanded(
-          child: SizedBox(
-            height: 1000,
-            child: new ListView.builder(
-              itemCount: _orderslist.length,
-              itemBuilder: (context, i) {
-                print(_orderslist[i].status,);
-                return new Card(
-                  child: Column(
-                    children: [
-                      new ListTile(
-                        leading: new Image.network(_orderslist[i].image,), /*new CircleAvatar(backgroundImage: new NetworkImage(
-                                  // _searchResult[i].image,),),*/
-                        title: new Text(_orderslist[i].name, style: TextStyle(color: Colors.black),),
-                        subtitle: Row(
-                          children: [
-                            SizedBox(
-                              width: 300,
-                              child: Text("price: \$" + "${_orderslist[i].price}",
-                                style: TextStyle(fontWeight: FontWeight.bold),),
-                            ),
-
-                            //Text(_Prods[i].model,style: TextStyle(fontWeight: FontWeight.bold),),
-                          ],
-                        ),
-                      ),
-
-                    ],
-                  ),
-                  margin: const EdgeInsets.all(0.0),
-                );
-
-              },
-            ),
-          ),
-        )
-    );
-  }
-}
-*/

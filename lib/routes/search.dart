@@ -352,9 +352,9 @@ class _searchState extends State<search> {
 List<ProductDetails> _searchResult = [];
 List<ProductDetails> _prodDetails = [];
 
-final String url = "http://10.0.2.2:8000/api/product";
-final String urlw = "http://10.0.2.2:8000/api/category/4";
-final String urlm = "http://10.0.2.2:8000/api/category/5";
+final String url = "http://localhost:8000/api/product";
+final String urlw = "http://localhost:8000/api/category/4";
+final String urlm = "http://localhost:8000/api/category/5";
 class ProductDetails {
   final int id, category_id, price, quantity_in_stocks;
   final String name, model, description, image;
